@@ -34,6 +34,23 @@
     };
   }
 
+  /* ------------------------------------------------------------------ device-specific entrance animations */
+  // Some headings have an Elementor entrance animation for PHONES only. Elementor reveals an
+  // element only if the CURRENT device has an animation; elsewhere it must simply be visible.
+  function animationForDevice(st) {
+    var wdt = w.innerWidth, mobile = wdt <= 767, tablet = !mobile && wdt <= 1024;
+    function pick(k) { return st[k + "_mobile"] && mobile ? st[k + "_mobile"]
+      : (st[k + "_tablet"] && (mobile || tablet) ? st[k + "_tablet"] : st[k]); }
+    var a = pick("_animation") || pick("animation");
+    return a && a !== "none" ? a : "";
+  }
+  d.addEventListener("DOMContentLoaded", function () {
+    Array.prototype.forEach.call(d.querySelectorAll(".elementor-invisible[data-settings]"), function (el) {
+      var st; try { st = JSON.parse(el.getAttribute("data-settings")); } catch (e) { return; }
+      if (!animationForDevice(st)) el.classList.remove("elementor-invisible");
+    });
+  });
+
   /* ------------------------------------------------------------------ hero intro video */
   // The hero's animated intro (trees -> gate -> photo) is an Elementor "play once" background
   // video. Elementor starts it on page load, while the guest is still on the cover, so it had
@@ -80,11 +97,12 @@
     });
     section.classList.remove("pres-intro-pending");
     var cs = getComputedStyle(section), img = cs.backgroundImage;
-    if (!img || img === "none") return;
-    if (w.matchMedia && w.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!img || img === "none" || (w.matchMedia && w.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
+      setTimeout(revealHeroContent, 300); return;
+    }
     var wrap = d.createElement("div");
     wrap.className = "pres-intro"; wrap.setAttribute("aria-hidden", "true");
-    ["wash", "gate", "left", "right", "bottom", "seal"].forEach(function (name) {
+    ["center", "left", "right", "bottom", "seal"].forEach(function (name) {
       var l = d.createElement("div");
       l.className = "pres-intro__layer pres-intro--" + name;
       l.style.backgroundImage = img;
@@ -99,7 +117,21 @@
     setTimeout(function () {
       section.classList.remove("pres-intro-running");
       if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
-    }, 7600);
+    }, 2700);
+    // Without the video there is nothing to wait 10 s for: reveal the title & photo as the scene
+    // settles, one after another, using the page's own fadeupOne / zoomOne animations.
+    setTimeout(revealHeroContent, 1900);
+  }
+  function revealHeroContent() {
+    var k = d.getElementById("kontenS1");
+    if (!k || getComputedStyle(k).display !== "none") return;
+    var items = k.querySelectorAll(".anim.fadeupOne, .anim.zoomOne");
+    Array.prototype.forEach.call(items, function (el, i) {
+      el.style.animationDuration = "1.6s";
+      el.style.animationDelay = (i * 0.22).toFixed(2) + "s";
+      el.style.animationFillMode = "backwards";
+    });
+    k.style.display = "block";
   }
 
   d.addEventListener("click", function (e) {

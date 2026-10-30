@@ -54,29 +54,30 @@ html.pres-mask-fallback .elementor-92432 .elementor-element.elementor-element-72
 
 
 /* Recreated hero intro (used only when the original intro video cannot be played).
-   Six copies of the section's own fallback picture, aligned identically, revealed zone by
-   zone; the last layer is the complete picture, so the sequence ends exactly on the original. */
+   Copies of the section's own fallback picture, aligned identically, revealed zone by zone with
+   the same soft fade/zoom character as the rest of the page; the last layer is the complete
+   picture, so the sequence always ends exactly on the original. ~2.4 s in total. */
 .pres-intro-pending, .pres-intro-running { background-image: none !important; }
 .pres-intro { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
 .pres-intro__layer { position: absolute; inset: 0; opacity: 0; will-change: opacity, transform;
-  animation-duration: 2.4s; animation-fill-mode: both; animation-timing-function: cubic-bezier(.22, .61, .36, 1); }
-.pres-intro--wash { filter: blur(18px) saturate(.85); transform: scale(1.08); animation-name: pres-wash; animation-duration: .9s; }
-.pres-intro--gate { -webkit-mask-image: radial-gradient(ellipse 38% 54% at 50% 42%, #000 55%, transparent 100%);
-  mask-image: radial-gradient(ellipse 38% 54% at 50% 42%, #000 55%, transparent 100%);
-  animation-name: pres-gate; animation-delay: .3s; animation-duration: 2.3s; }
-.pres-intro--left { -webkit-mask-image: linear-gradient(to right, #000 0%, #000 22%, transparent 42%);
-  mask-image: linear-gradient(to right, #000 0%, #000 22%, transparent 42%);
-  animation-name: pres-left; animation-delay: 1.6s; }
-.pres-intro--right { -webkit-mask-image: linear-gradient(to left, #000 0%, #000 22%, transparent 42%);
-  mask-image: linear-gradient(to left, #000 0%, #000 22%, transparent 42%);
-  animation-name: pres-right; animation-delay: 2s; }
-.pres-intro--bottom { -webkit-mask-image: linear-gradient(to top, #000 0%, #000 16%, transparent 34%);
-  mask-image: linear-gradient(to top, #000 0%, #000 16%, transparent 34%);
-  animation-name: pres-bottom; animation-delay: 3.2s; }
-.pres-intro--seal { animation-name: pres-fade; animation-delay: 5.2s; animation-duration: 2s; animation-timing-function: ease-in-out; }
-@keyframes pres-wash { from { opacity: 0; } to { opacity: 1; } }
-@keyframes pres-gate { from { opacity: 0; transform: scale(1.08) translateY(2%); } to { opacity: 1; transform: none; } }
-@keyframes pres-left { from { opacity: 0; transform: translateX(-38%); } to { opacity: 1; transform: none; } }
-@keyframes pres-right { from { opacity: 0; transform: translateX(38%); } to { opacity: 1; transform: none; } }
-@keyframes pres-bottom { from { opacity: 0; transform: translateY(30%); } to { opacity: 1; transform: none; } }
+  animation-fill-mode: both; animation-timing-function: cubic-bezier(.25, .46, .45, .94); }
+.pres-intro--center {
+  -webkit-mask-image: linear-gradient(to right, transparent 4%, #000 30%, #000 70%, transparent 96%), linear-gradient(to top, transparent 6%, #000 34%);
+  mask-image: linear-gradient(to right, transparent 4%, #000 30%, #000 70%, transparent 96%), linear-gradient(to top, transparent 6%, #000 34%);
+  -webkit-mask-composite: source-in; mask-composite: intersect;
+  animation-name: pres-center; animation-duration: 1.6s; }
+.pres-intro--left { -webkit-mask-image: linear-gradient(to right, #000 0%, #000 26%, transparent 46%);
+  mask-image: linear-gradient(to right, #000 0%, #000 26%, transparent 46%);
+  animation-name: pres-left; animation-delay: .3s; animation-duration: 1.5s; }
+.pres-intro--right { -webkit-mask-image: linear-gradient(to left, #000 0%, #000 26%, transparent 46%);
+  mask-image: linear-gradient(to left, #000 0%, #000 26%, transparent 46%);
+  animation-name: pres-right; animation-delay: .45s; animation-duration: 1.5s; }
+.pres-intro--bottom { -webkit-mask-image: linear-gradient(to top, #000 0%, #000 18%, transparent 38%);
+  mask-image: linear-gradient(to top, #000 0%, #000 18%, transparent 38%);
+  animation-name: pres-bottom; animation-delay: .65s; animation-duration: 1.4s; }
+.pres-intro--seal { animation-name: pres-fade; animation-delay: 1.5s; animation-duration: .9s; animation-timing-function: ease-in-out; }
+@keyframes pres-center { from { opacity: 0; transform: scale(1.05); } to { opacity: 1; transform: none; } }
+@keyframes pres-left { from { opacity: 0; transform: translateX(-9%); } to { opacity: 1; transform: none; } }
+@keyframes pres-right { from { opacity: 0; transform: translateX(9%); } to { opacity: 1; transform: none; } }
+@keyframes pres-bottom { from { opacity: 0; transform: translateY(8%); } to { opacity: 1; transform: none; } }
 @keyframes pres-fade { from { opacity: 0; } to { opacity: 1; } }
